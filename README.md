@@ -2,7 +2,7 @@
 
 [`minica`](https://github.com/jsha/minica) is a small, simple CA intended for use in situations where the CA operator also operates each host where a certificate will be used. It's releases do not include pre-compiled binaries, so end users must have Golang installed to build/install the CLI from source.
 
-This project provides pre-compiled binaries for `minica` via a Concourse CI pipeline for Linux and MacOS.
+This project provides pre-compiled binaries for `minica` via a [Concourse CI pipeline](brew upgrade imagemagick) for Linux and MacOS. Let me know if you want Windows binaries (I'll need to figure out how to sign them).
 
 In addition, we will maintain Homebrew and Debian packages to install these binaries.
 
