@@ -31,8 +31,7 @@ jobs:
       - get: minica
         params: {include_source_tarball: true}
         trigger: true
-      - name: build
-        task: build
+      - task: build
         config:
           platform: linux
           image_resource:
@@ -81,13 +80,12 @@ jobs:
           params:
             BINARY: minica
             STATIC_BINARY: true
-      # - name: github
-      #   put: github
-      #   params:
-      #     name:   gh/name
-      #     tag:    gh/tag
-      #     body:   gh/notes.md
-      #     globs: [gh/artifacts/*]
+      - put: github
+        params:
+          name:   gh/name
+          tag:    gh/tag
+          body:   gh/notes.md
+          globs: [gh/artifacts/*]
 resources:
   - name: git
     type: git
@@ -103,9 +101,9 @@ resources:
       repository:   minica
       access_token: (( grab meta.github.access_token ))
 
-  # - name: github
-  #   type: github-release
-  #   source:
-  #     user:         (( grab meta.github.owner ))
-  #     repository:   (( grab meta.github.repo ))
-  #     access_token: (( grab meta.github.access_token ))
+  - name: github
+    type: github-release
+    source:
+      user:         (( grab meta.github.owner ))
+      repository:   (( grab meta.github.repo ))
+      access_token: (( grab meta.github.access_token ))
