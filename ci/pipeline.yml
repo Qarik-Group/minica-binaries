@@ -43,6 +43,7 @@ jobs:
           inputs:
             - name: git
             - name: minica
+              path: app
           outputs:
             - name: gh
             - name: notifications
@@ -53,8 +54,33 @@ jobs:
             args:
             - -ec
             - |
-              ls -alR
-              echo "hello world"
+              TARGETS=${TARGETS:-linux/amd64 darwin/amd64}
+              VERSION=$(cat app/version)
+
+              go get github.com/mitchellh/gox
+              if [[ -n ${STATIC_BINARY} && ${STATIC_BINARY} != "false" ]]; then
+                echo "Creating static binary"
+                export CGO_ENABLED=0
+              fi
+
+              artifacts=$PWD/gh/artifacts
+              echo "v${VERSION}"           > gh/tag
+              echo "${BINARY} v${VERSION}" > gh/name
+              cp app/body                    gh/notes.md
+
+              mkdir -p ${artifacts}
+              (
+                cd app
+                tar xfz source.tar.gz
+                cd *${BINARY}*/
+
+                gox -osarch="${TARGETS}" --output="${artifacts}/${BINARY}-{{.OS}}-{{.Arch}}" -ldflags="-X main.Version=${VERSION}" ./...
+                go build -o "${BINARY:?required}" -ldflags="-X main.Version=${VERSION}" ${CMD_PKG:-.}
+              )
+              ls -alR gh/
+          params:
+            BINARY: minica
+            STATIC_BINARY: true
       # - name: github
       #   put: github
       #   params:
