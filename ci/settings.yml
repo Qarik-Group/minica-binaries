@@ -1,0 +1,17 @@
+---
+meta:
+  name:    minica-binaries
+  # fly -t ohio-cf login -c https://ci2.starkandwayne.com -n cfcommunity
+  target:  ohio-cf
+  url:     https://ci2.starkandwayne.com
+
+  git:
+    email:  ((git-commit-email))
+    name:   ((git-commit-name))
+
+  github:
+    owner:  starkandwayne
+    repo:   minica-binaries
+    branch: master
+    private_key:  ((github-private-key))
+    access_token: ((github-access-token))
